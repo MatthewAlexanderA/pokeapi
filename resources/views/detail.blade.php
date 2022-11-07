@@ -9,10 +9,10 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <style>
-        .none{
-            display: none;
-        }
         .type{
+            color: #fff;
+        }
+        .type:hover{
             color: #fff;
         }
         .grass{
@@ -129,78 +129,79 @@
 </head>
 
 <body style="background-color: rgb(230, 230, 230)">
-    <div class="content text-center mt-3">
-        <h1>{{ ucwords($pokemons['name']) }}</h1>
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ $pokemons['id'] }}.png" alt="{{ ucwords($pokemons['name']) }}" title="{{ ucwords($pokemons['name']) }}">
-        <div class="types">
-            @foreach ($pokemons['types'] as $types)
-                @foreach ($types['type'] as $type)
-                    <div class="type btn @if ($type == 'grass')
-                    grass
-                    @elseif ($type == 'poison')
-                    poison
-                    @elseif ($type == 'fire')
-                    fire
-                    @elseif ($type == 'flying')
-                    flying
-                    @elseif ($type == 'water')
-                    water
-                    @elseif ($type == 'bug')
-                    bug
-                    @elseif ($type == 'normal')
-                    normal
-                    @elseif ($type == 'electric')
-                    electric
-                    @elseif ($type == 'ground')
-                    ground
-                    @elseif ($type == 'fairy')
-                    fairy
-                    @elseif ($type == 'fighting')
-                    fighting
-                    @elseif ($type == 'psychic')
-                    psychic
-                    @elseif ($type == 'rock')
-                    rock
-                    @elseif ($type == 'steel')
-                    steel
-                    @elseif ($type == 'ice')
-                    ice
-                    @elseif ($type == 'ghost')
-                    ghost
-                    @elseif ($type == 'dragon')
-                    dragon
-                    @elseif ($type == 'dark')
-                    dark
-                    @else
-                    none
-                    @endif">{{ ucwords($type) }}</div> 
-                @endforeach
-            @endforeach
+    <a href="{{ route('pokemons.index') }}" class="btn m-2" style="background-color: red; color: white;">Back</a>
+    <div class="content">
+
+        <div class="row">
+            <div class="col-sm-5 text-center">
+                <h1>{{ ucwords($pokemons['name']) }}</h1>
+                <img style="width: 300px; height:300px;" src="{{ $pokemons['sprites']['front_default'] }}" alt="{{ ucwords($pokemons['name']) }}" title="{{ ucwords($pokemons['name']) }}">
+                <div class="types">
+                    @foreach ($pokemons['types'] as $types)
+                        <div class="type btn {{ $types['type']['name'] }}">{{ ucwords($types['type']['name']) }}</div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-sm-7">
+
+                <h4 class="mt-5">Base Stats</h4>
+                <table class="table table-hover table-bordered text-center" style="width: 80%">
+                    <thead>
+                        <tr>
+                            <th scope="col">HP</th>
+                            <th scope="col">Atk</th>
+                            <th scope="col">Def</th>
+                            <th scope="col">Sp. Atk</th>
+                            <th scope="col">Sp. Def</th>
+                            <th scope="col">Spd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach ($pokemons['stats'] as $stats)
+                                <td>{{ $stats['base_stat'] }}</td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+
+                <h4 class="mt-5">Informations</h4>
+                <table class="table table-hover table-bordered text-center" style="width: 80%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Height</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">Base EXP</th>
+                            <th scope="col">Ability</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{ $pokemons['id'] }}</th>
+                            <td>{{ $pokemons['height'] }}</td>
+                            <td>{{ $pokemons['weight'] }}</td>
+                            <td>{{ $pokemons['base_experience'] }}</td>
+                            <td>
+                                @foreach ($pokemons['abilities'] as $ability)
+                                    {{ $ability['ability']['name'] }}, 
+                                @endforeach
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>        
+        
+        <div class="mt-5 text-center">
+            <a href="{{ route('pokemons.show', $pokemons['id'] - 1) }}" class="btn btn-secondary" style="text-align: left;"> << Previous</a>
+            <a href="{{ route('pokemons.show', $pokemons['id'] + 1) }}" class="btn btn-secondary" style="text-align: right;">Next >> </a>
         </div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Height</th>
-                    <th scope="col">Weight</th>
-                    <th scope="col">Base EXP</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- {{ $pokemons }} --}}
-                {{-- @foreach ($pokemons as $pokemon) --}}
-                <tr>
-                    <th scope="row">{{ $pokemons['id'] }}</th>
-                    <td>{{ $pokemons['height'] }}</td>
-                    <td>{{ $pokemons['weight'] }}</td>
-                    <td>{{ $pokemons['base_experience'] }}</td>
-                </tr>
-                {{-- @endforeach --}}
-            </tbody>
-        </table>
     </div>
-    <div style="text-align: left; padding: 10px;"><a href="{{ route('pokemon.show', $pokemons['id'] - 1) }}"> << Previous</a></div>
-    <div style="text-align: right; padding: 10px;"><a href="{{ route('pokemon.show', $pokemons['id'] + 1) }}">Next >> </a></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">

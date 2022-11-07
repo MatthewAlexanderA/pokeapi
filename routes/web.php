@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PokemonController;
+use App\Http\Controllers\PageController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('pokemon', PokemonController::class);
+Route::resource('pokemons', PokemonController::class);
+
+Route::post('pokemon', [PokemonController::class, 'search'])->name('search');
+
+Route::post('pokemons', [PageController::class, 'link'])->name('link');
