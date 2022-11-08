@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::resource('/', PokemonController::class);
 Route::resource('pokemons', PokemonController::class);
 
 Route::post('pokemon', [PokemonController::class, 'search'])->name('search');
